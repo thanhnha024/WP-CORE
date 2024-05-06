@@ -1,6 +1,6 @@
 node_modules
 src/wp-content/uploads
-src/wp-content/plugins
+# src/wp-content/plugins
 .env.sample
 # docker-compose.yml
 # Dockerfile
