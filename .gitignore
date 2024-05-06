@@ -1,7 +1,7 @@
 node_modules
 src/wp-content/uploads
 # src/wp-content/plugins
-.env.sample
+# .env.sample
 # docker-compose.yml
 # Dockerfile
 # gulpfile.js
