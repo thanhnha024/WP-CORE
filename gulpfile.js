@@ -1,6 +1,6 @@
 "use strict";
 
-const nameFolderTheme = "shin-child";
+const nameFolderTheme = "zippy-child";
 const gulp = require("gulp");
 const destFolder = "src/wp-content/themes/" + nameFolderTheme + "/assets/main";
 
