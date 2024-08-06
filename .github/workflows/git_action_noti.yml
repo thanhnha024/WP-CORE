@@ -2,10 +2,10 @@ name: Wordpress Notifications Git Action
 
 run-name: ${{ github.actor }} GitHub Actions 🚀
 
-on: 
+on:
  push:
     branches:
-      - feature-*
+      - feature/*
       - main
 jobs:
   create-pull-request:
