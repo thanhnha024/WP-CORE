@@ -20,6 +20,6 @@ jobs:
             - Update new change on  ${{ github.ref }}
           branch: ${{ github.ref }}
           base: main
-          reviewers: peter-evans
+          reviewers: ThanhNha
           delete-branch: true
 
