@@ -18,8 +18,9 @@ jobs:
           body: |
             Update new changes💬:
             - Update new change on  ${{ github.ref }}
+            - ${{ github.event.number }}
           branch: ${{ github.ref }}
-          base: main
+          base: master
           reviewers: ThanhNha
           delete-branch: true
 
