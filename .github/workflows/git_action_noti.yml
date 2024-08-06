@@ -13,9 +13,12 @@ jobs:
           to: -1002247685770
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
           message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
+            💥 Please check new commit 💥:
 
-            Repository: ${{ github.repository }}
+            ${{ github.actor }} created commit 🔑:
+            Commit message 💬: ${{ github.event.commits[0].message }}
 
+            Project 🚀: ${{ github.repository }}
+            Project link 🔎: https://github.com/${{ github.repository }}
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
