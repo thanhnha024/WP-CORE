@@ -18,7 +18,7 @@ Various build commands are available that execute the webpack 5 builds:
 
 - `npm run build` - development webpack build (`webpack --mode development`).
 - `npm run dist` - production webpack build, with code minification enabled (`webpack --mode production`).
-- `npm run watch` - development watch command.
+- `npm run dev` - development watch command.
 
 ## Deploying the Theme
 
