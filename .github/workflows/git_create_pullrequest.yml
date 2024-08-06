@@ -12,8 +12,14 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: update authors
-          title: Update AUTHORS
-          body: Credit new contributors by updating AUTHORS
+          commit-message: upadte new change on ${{ github.ref }}
+          title: New update adjustment by ${{ github.actor }}
+          author: ${{ github.actor }}
+          body: |
+            Update new changes💬:
+            - Update new change on  ${{ github.ref }}
           branch: ${{ github.ref }}
           base: main
+          reviewers: peter-evans
+          delete-branch: true
+
