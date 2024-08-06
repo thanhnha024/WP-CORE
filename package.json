@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "dist": "webpack --mode production",
-    "watch": "webpack --watch --mode development"
+    "dev": "webpack --watch --mode development"
   },
   "author": "Shin <nhathanh024@gmail.com> (https://theshin.online/)",
   "license": "ISC",
