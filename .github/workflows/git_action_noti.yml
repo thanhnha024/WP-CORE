@@ -2,10 +2,7 @@ name: Wordpress Notifications Git Action
 
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
-on:
-  push:
-    tags:
-      - "*"
+on: [push]
 jobs:
   Notification-To-Github:
     runs-on: ubuntu-latest
