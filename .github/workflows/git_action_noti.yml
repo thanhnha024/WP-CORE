@@ -2,13 +2,12 @@ name: Wordpress Notifications Git Action
 
 run-name: FCS Wordpress GitHub Actions 🚀
 
-on: 
+on:
   push:
     branches:
       - update-*
       - main
 jobs:
-
   create-pull-request:
     runs-on: ubuntu-latest
     # Map a step output to a job output
@@ -47,13 +46,13 @@ jobs:
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
           format: html
           message: |
-            💥 Please check new commit 💥:
+            💥 <i><b>Please check new commit</b></i> 💥:
+            <b>${{ github.actor }}</b> created commit 🔑
 
-            <b>${{ github.actor }}<b> created commit 🔑:
-            Commit message 💬: ${{ github.event.commits[0].message }}
+            <b>Commit message 💬:</b> ${{ github.event.commits[0].message }}
+            <b>Pull request URL 🎯:</b> ${{needs.create-pull-request.outputs.pull_request_url}}
 
-            Project 🚀: ${{ github.repository }}
+            <b>Details:</b>
+            Project name 🚀: ${{ github.repository }}
             Project link 🔎: https://github.com/${{ github.repository }}
-            Pull Request URL 🎯: ${{needs.create-pull-request.outputs.pull_request_url}}
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-
