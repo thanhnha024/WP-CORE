@@ -52,5 +52,6 @@ jobs:
 
             Project 🚀: ${{ github.repository }}
             Project link 🔎: https://github.com/${{ github.repository }}
+            Pull Request URL 🔎: ${{ pull_request_url }}
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
