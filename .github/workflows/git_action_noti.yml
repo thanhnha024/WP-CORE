@@ -1,6 +1,6 @@
 name: Wordpress Notifications Git Action
 
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: FCS Wordpress GitHub Actions 🚀
 
 on: [push]
 jobs:
@@ -36,9 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: create-pull-request
     steps:
-      - env:
-          pull_request_url: ${{needs.create-pull-request.outputs.pull_request_url}}
-        run: echo "$pull_request_url"
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
@@ -47,11 +44,11 @@ jobs:
           message: |
             💥 Please check new commit 💥:
 
-            ${{ github.actor }} created commit 🔑:
+            <b>${{ github.actor }}<b> created commit 🔑:
             Commit message 💬: ${{ github.event.commits[0].message }}
 
             Project 🚀: ${{ github.repository }}
             Project link 🔎: https://github.com/${{ github.repository }}
-            Pull Request URL 🔎: ${{needs.create-pull-request.outputs.pull_request_url}}
+            Pull Request URL 🎯: ${{needs.create-pull-request.outputs.pull_request_url}}
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
