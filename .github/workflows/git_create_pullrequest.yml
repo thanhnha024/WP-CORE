@@ -1,3 +1,4 @@
+
 name: Pull Request Action
 on:
   push:
@@ -7,7 +8,7 @@ jobs:
   create-pull-request:
     runs-on: ubuntu-latest
     steps:
-      - name: Auto create pull request when someone push
+      - name: Update AUTHORS
         uses: actions/checkout@v4
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -16,10 +17,10 @@ jobs:
           title: New update adjustment by ${{ github.actor }}
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           body: |
-            Update new changes 💬:
-            - Update new change on ${{ github.ref }}
-          # branch: ${{ github.ref_name }}
-          base: main
+            Update new changes💬:
+            - Update new change on  ${{ github.ref }}
+            - ${{ github.event.number }}
+          branch: ${{ github.ref }}
+          base: master
           reviewers: ThanhNha
-          # delete-branch: true
-
+          delete-branch: true
