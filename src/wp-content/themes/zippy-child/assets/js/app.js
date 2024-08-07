@@ -13,4 +13,4 @@ let Main = {
 
 
 console.log($('.more-link'));
-// Main.init();
+Main.init();
