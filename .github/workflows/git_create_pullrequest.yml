@@ -6,13 +6,10 @@ on:
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
-    outputs:
-      pull_number: ${{ steps.cpr.outputs.pull-request-url }}
     steps:
       - name: Auto create pull request when some one push code
         uses: actions/checkout@v4
       - name: Create Pull Request
-        id: cpr
         uses: peter-evans/create-pull-request@v6
 
         with:
@@ -22,7 +19,6 @@ jobs:
           body: |
             Update new changes 💬:
             - Update new change on  ${{ github.ref_name }}
-            - Update ${{ steps.cpr.outputs.pull-request-url }}
           branch: ${{ github.ref_name }}
           base: main
           reviewers: ThanhNha
