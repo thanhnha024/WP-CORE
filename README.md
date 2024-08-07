@@ -4,7 +4,7 @@ Provides a boilerplate WordPress theme that features a webpack 5 build for CSS/S
 
 ## Development
 
-After deploying and enabling the theme on a WordPress instance (see *Deploying the Theme* section below), install the theme dependencies by running the following command in the theme root (e.g. `/wp-content/themes/zippy`):
+After deploying and enabling the theme on a WordPress instance (see _Deploying the Theme_ section below), install the theme dependencies by running the following command in the theme root (e.g. `/wp-content/themes/zippy`):
 
 ```
 npm install
@@ -22,4 +22,4 @@ Various build commands are available that execute the webpack 5 builds:
 
 ## Deploying the Theme
 
-This theme can be downloaded and deployed into a WordPress instance's themes directory (i.e. `/wp-content/themes`). Once the theme is deployed, run the build commands (`npm install` and `npm run dist`) to install and build the JavaScript and CSS.  
+This theme can be downloaded and deployed into a WordPress instance's themes directory (i.e. `/wp-content/themes`). Once the theme is deployed, run the build commands (`npm install` and `npm run dist`) to install and build the JavaScript and CSS.
