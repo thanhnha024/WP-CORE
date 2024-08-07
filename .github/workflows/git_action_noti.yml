@@ -2,7 +2,11 @@ name: Wordpress Notifications Git Action
 
 run-name: FCS Wordpress GitHub Actions 🚀
 
-on: [push]
+on: 
+  push:
+    branches:
+      - update-*
+      - main
 jobs:
 
   create-pull-request:
@@ -41,6 +45,7 @@ jobs:
         with:
           to: -1002034905977
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
+          format: html
           message: |
             💥 Please check new commit 💥:
 
