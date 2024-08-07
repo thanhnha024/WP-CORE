@@ -12,5 +12,5 @@ let Main = {
 };
 
 
-// console.log($('.more-link'));
+console.log($('.more-link'));
 // Main.init();
