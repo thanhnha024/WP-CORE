@@ -10,7 +10,14 @@ jobs:
       - name: Auto create pull request when someone push
         uses: actions/checkout@v4
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v6
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+
         with:
           commit-message: upadte new change on ${{ github.ref }}
           title: New update adjustment by ${{ github.actor }}
@@ -18,7 +25,7 @@ jobs:
           body: |
             Update new changes 💬:
             - Update new change on ${{ github.ref }}
-          branch: ${{ github.ref_name }}
+          # branch: ${{ github.ref_name }}
           base: main
           reviewers: ThanhNha
           # delete-branch: true
