@@ -11,6 +11,7 @@ jobs:
       - name: Update AUTHORS
         uses: actions/checkout@v4
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: upadte new change on ${{ github.ref }}
@@ -19,7 +20,7 @@ jobs:
           body: |
             Update new changes💬:
             - Update new change on  ${{ github.ref }}
-            - ${{ github.event.number }}
+            - ${{ steps.cpr.outputs.pull-request-number }}
           branch: ${{ github.ref }}
           base: master
           reviewers: ThanhNha
