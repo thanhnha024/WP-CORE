@@ -20,7 +20,6 @@ jobs:
           body: |
             Update new changes💬:
             - Update new change on  ${{ github.ref }}
-            - ${{ steps.cpr.outputs.pull-request-number }}
           branch: ${{ github.ref }}
           base: master
           reviewers: ThanhNha
