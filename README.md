@@ -20,6 +20,6 @@ Various build commands are available that execute the webpack 5 builds:
 - `npm run dist` - production webpack build, with code minification enabled (`webpack --mode production`).
 - `npm run dev` - development watch command.
 
-## Deploying the Theme
+## Deploying the Theme 
 
 This theme can be downloaded and deployed into a WordPress instance's themes directory (i.e. `/wp-content/themes`). Once the theme is deployed, run the build commands (`npm install` and `npm run dist`) to install and build the JavaScript and CSS.   
