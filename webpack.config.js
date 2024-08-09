@@ -87,6 +87,7 @@ module.exports = [
           files: [
             destOutput + "/*/*.css",
             destOutput + "/*/*.js",
+            destChildTheme + "/*.php",
             destChildTheme + "/*/*.php",
           ],
           injectCss: true,
