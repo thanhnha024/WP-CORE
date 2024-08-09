@@ -30,8 +30,10 @@ jobs:
           title: New update adjustment by ${{ github.actor }}
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           body: |
+            $(cat .github/pull_request_template.md)
             Update new changes💬:
             - Update new change on  ${{ github.ref }}
+            **Created by:** ${{ github.actor }}
           branch: ${{ github.ref }}
           base: master
           reviewers: ThanhNha
