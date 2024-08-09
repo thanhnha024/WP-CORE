@@ -22,6 +22,11 @@ jobs:
     steps:
       - name: Auto create pull request when someone push new changes
         uses: actions/checkout@v4
+      - name: Render template
+        id: render_template
+        uses: chuhlomin/render-template@v1.4
+        with:
+          template: kube.template.yml  
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
@@ -29,11 +34,7 @@ jobs:
           commit-message: upadte new change on ${{ github.ref }}
           title: New update adjustment by ${{ github.actor }}
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          body: |
-            $(cat .github/pull_request_template.md)
-            Update new changes💬:
-            - Update new change on  ${{ github.ref }}
-            **Created by:** ${{ github.actor }}
+          body-path: './github/pull_request_template.md'
           branch: ${{ github.ref }}
           base: master
           reviewers: ThanhNha
