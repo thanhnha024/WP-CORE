@@ -29,7 +29,7 @@ jobs:
           commit-message: upadte new change on ${{ github.ref }}
           title: New update adjustment by ${{ github.actor }}
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          body-path: './github/pull_request_template.md'
+          body-path: './.github/pull_request_template.md'
           branch: ${{ github.ref }}
           base: master
           reviewers: ThanhNha
