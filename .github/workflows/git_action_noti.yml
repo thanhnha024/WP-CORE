@@ -22,11 +22,6 @@ jobs:
     steps:
       - name: Auto create pull request when someone push new changes
         uses: actions/checkout@v4
-      - name: Render template
-        id: render_template
-        uses: chuhlomin/render-template@v1.4
-        with:
-          template: kube.template.yml  
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
