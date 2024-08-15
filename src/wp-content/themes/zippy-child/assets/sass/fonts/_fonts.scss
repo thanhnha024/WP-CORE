@@ -1,13 +1,10 @@
-/*
-  use  ../../path_to_font =  Theme-child
-*/
-$assets_path: "../../fonts" !default;
+
 
 /* Font face for web template */
-@include font-face("Open Sans", "#{$assets_path}/Arial/SVN-Arial-Regular", 500);
-@include font-face("Open Sans", "#{$assets_path}/Arial/SVN-Arial-Bold", 900);
-@include font-face("Open Sans", "#{$assets_path}/Arial/SVN-Arial-Italic", 500);
-@include font-face("Open Sans", "#{$assets_path}/Arial/SVN-Arial-Bold-Italic", 900);
+@include font-face("Open Sans", "#{$assets_path}fonts/Arial/SVN-Arial-Regular", 500);
+@include font-face("Open Sans", "#{$assets_path}fonts/Arial/SVN-Arial-Bold", 900);
+@include font-face("Open Sans", "#{$assets_path}fonts/Arial/SVN-Arial-Italic", 500);
+@include font-face("Open Sans", "#{$assets_path}fonts/Arial/SVN-Arial-Bold-Italic", 900);
 html * {
   // background: url(../../img/background.jpg);
   background-size: cover;

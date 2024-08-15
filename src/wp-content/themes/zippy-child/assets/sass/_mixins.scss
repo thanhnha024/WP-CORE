@@ -1,4 +1,9 @@
 /*
+  use  ../../path_to_font =  Theme-child
+*/
+
+$assets_path: "../../" !default;
+/*
 Button background color
 */
 @mixin button-bg($bg) {
@@ -26,7 +31,13 @@ String Replace
 /*
 Font Face
 */
-@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+@mixin font-face(
+  $name,
+  $path,
+  $weight: null,
+  $style: null,
+  $exts: eot woff2 woff ttf svg
+) {
   $src: null;
   $extmods: (
     eot: "?",
@@ -37,9 +48,17 @@ Font Face
     ttf: "truetype",
   );
   @each $ext in $exts {
-    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $extmod: if(
+      map-has-key($extmods, $ext),
+      $ext + map-get($extmods, $ext),
+      $ext
+    );
     $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
-    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+    $src: append(
+      $src,
+      url(quote($path + "." + $extmod)) format(quote($format)),
+      comma
+    );
   }
   @font-face {
     font-family: quote($name);
