@@ -21,7 +21,7 @@ const localDomain = process.env.PROJECT_HOST
 // Define Work path
 const destFileCss = destChildTheme + "/assets/sass/app.scss";
 const destFileJs = destChildTheme + "/assets/js/app.js";
-const destOutput = destChildTheme + "/dist";
+const destOutput = destChildTheme + "/assets/dist";
 
 module.exports = [
   {
@@ -44,14 +44,34 @@ module.exports = [
         // sass compilation
         {
           test: /\.(sass|scss)$/,
-          use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: "css-loader",
+              options: { url: false },
+            },
+            {
+              loader: "sass-loader",
+              options: {
+                sourceMap: true,
+                sassOptions: {
+                  outputStyle: "compressed",
+                },
+                additionalData: "$assets_path: 200px;",
+              },
+            },
+            "sass-loader",
+          ],
         },
-        // loader for webfonts (only required if loading custom fonts)
+        // Font files
         {
-          test: /\.(woff|woff2|eot|ttf|otf)$/,
-          type: "asset/resource",
-          generator: {
-            filename: destOutput + "/build/font/[name][ext]",
+          test: /\.(woff|woff2|ttf|otf)$/,
+          loader: "file-loader",
+          include: path.resolve(__dirname, "../"),
+
+          options: {
+            name: "[hash].[ext]",
+            outputPath: "fonts/",
           },
         },
         // loader for images and icons (only required if css references image files)
