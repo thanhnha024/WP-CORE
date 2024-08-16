@@ -19,7 +19,7 @@ jobs:
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
           format: html
           message: |
-            <i><b>Website Deploying... 🚀</b></i>
+            <i><code>${{secrets.FPT_DIR_PATH}}</code><b> Website Deploying... 🚀</b></i>
 
             <b>Details:</b>
             Project name 💻: ${{ github.repository }}
@@ -35,6 +35,16 @@ jobs:
     steps:
       - name: 🚚 Get Latest Code
         uses: actions/checkout@v3
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: 🔨 Build Project
+        run: |
+          npm install
+          npm run build
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -59,9 +69,9 @@ jobs:
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
           format: html
           message: |
-            <i><b>Website Deployed ✅</b></i>
+            <i><code>${{secrets.FPT_DIR_PATH}}</code><b>Website Deployed ✅</b></i>
 
             <b>Details:</b>
-            Project name 🚀: ${{ github.repository }}
+            Project name 💻: ${{ github.repository }}
             Project link 🔎: https://github.com/${{ github.repository }}
-            See new changes: https://${{secrets.FPT_DIR_PATH}}
+            See new changes: https:/${{secrets.FPT_DIR_PATH}}
