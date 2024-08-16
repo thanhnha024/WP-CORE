@@ -1,11 +1,27 @@
+name: FCS Wordpress Deploy Via SFTP
+
+run-name: FCS Wordpress GitHub Actions 🚀
 on:
   push:
     branches:
+      - production
       - master
 
 jobs:
-  deploy:
+  web-deploy-via-sfpt:
+    name: 🚀 Deploy Website Every Commit
+
     runs-on: ubuntu-latest
+
     steps:
-      - run: |
-          echo The PR was merged
+      - name: 🚚 Get Latest Code
+        uses: actions/checkout@v3
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{secrets.FPT_SERVER}}
+          username: ${{secrets.FPT_USERNAME}}
+          password: ${{secrets.FTP_PASSWORD}}
+          local-dir: ./src/wp-content/
+          server-dir: ${{secrets.FPT_DIR_PATH}}

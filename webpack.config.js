@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-
 // Init Config Webpack
 require("dotenv-extended").load();
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
@@ -57,10 +56,9 @@ module.exports = [
                 sassOptions: {
                   outputStyle: "compressed",
                 },
-                additionalData: "$assets_path: 200px;",
+                additionalData: `@import "${destChildTheme}/assets/sass/_mixins";`,
               },
             },
-            "sass-loader",
           ],
         },
         // Font files
