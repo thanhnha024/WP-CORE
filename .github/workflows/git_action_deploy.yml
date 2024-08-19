@@ -85,9 +85,9 @@ jobs:
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
           format: html
           message: |
-            <i><code>${{secrets.FPT_DIR_PATH}}</code><b>Website Deployed ✅</b></i>
+            <i><code>${{secrets.FPT_DIR_PATH}}</code><b> Website Deployed ✅</b></i>
 
             <b>Details:</b>
             Project name 💻: ${{ github.repository }}
             Project link 🔎: https://github.com/${{ github.repository }}
-            See new changes: https:/${{secrets.FPT_DIR_PATH}}
+            See new changes: https://${{secrets.FPT_DIR_PATH}}
