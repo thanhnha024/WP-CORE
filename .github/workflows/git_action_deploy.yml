@@ -53,7 +53,7 @@ jobs:
           username: ${{secrets.FPT_USERNAME}}
           password: ${{secrets.FTP_PASSWORD}}
           local-dir: ./src/
-          server-dir: ${{secrets.FPT_DIR_PATH}}
+          server-dir: /${{secrets.FPT_DIR_PATH}}/
 
   notification-to-telegram:
     runs-on: ubuntu-latest
@@ -64,6 +64,7 @@ jobs:
     steps:
       - name: Telegram Notification
         uses: appleboy/telegram-action@master
+
         with:
           to: -1002034905977
           token: 6611988217:AAERCNw3lNbdpABmMztQudQXBuPcp1jsKdk
@@ -75,3 +76,5 @@ jobs:
             Project name 💻: ${{ github.repository }}
             Project link 🔎: https://github.com/${{ github.repository }}
             See new changes: https:/${{secrets.FPT_DIR_PATH}}
+
+
