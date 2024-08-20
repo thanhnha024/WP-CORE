@@ -34,3 +34,36 @@ function pr($data)
     die;
 
 }
+
+
+// Hook to initialize the custom endpoint
+add_action('init', 'register_health_check_endpoint');
+
+function register_health_check_endpoint() {
+    add_rewrite_rule('^health-check/?$', 'index.php?health_check=1', 'top');
+}
+
+// Hook to handle the custom query variable
+add_filter('query_vars', 'add_health_check_query_var');
+
+function add_health_check_query_var($vars) {
+    $vars[] = 'health_check';
+    return $vars;
+}
+
+// Hook to handle the request
+add_action('template_redirect', 'handle_health_check_endpoint');
+
+function handle_health_check_endpoint() {
+    global $wp_query;
+
+    if (isset($wp_query->query_vars['health_check']) && $wp_query->query_vars['health_check'] == 1) {
+        header('Content-Type: application/json');
+        $response = array(
+            'status' => 'ok',
+            'timestamp' => current_time('mysql')
+        );
+        echo json_encode($response);
+        exit;
+    }
+}
