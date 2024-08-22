@@ -10,6 +10,8 @@ jobs:
   send_deploying:
     name: Send Telegram Message When Deploying
     runs-on: ubuntu-latest
+    env:
+      super_secret: ${{ secrets.FPT_DIR_PATH }}
     steps:
       - name: Check if FPT_DIR_PATH is set
         if: ${{ env.super_secret != '' }}
