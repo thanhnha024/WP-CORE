@@ -17,4 +17,3 @@ RewriteRule . /index.php [L]
 </IfModule>
 
 # END WordPress
-max_execution 3000

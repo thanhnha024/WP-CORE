@@ -3,9 +3,8 @@ name: FCS Wordpress Deploy Via SFTP
 run-name: FCS Wordpress Deploy To Server 🚀
 on:
   push:
-    branches:
-      - production
-      - master
+    tags:
+      - production-*
 
 jobs:
   send_deploying:
@@ -16,10 +15,8 @@ jobs:
         if: ${{ env.super_secret != '' }}
         id: check_secret
         run: echo "FPT_DIR_PATH=${{ secrets.FPT_DIR_PATH }}"
-        continue-on-error: true
 
       - name: Send Telegram Message When Deploying
-        if: env.SECRET_NOT_SET == 'false'
         uses: appleboy/telegram-action@master
         with:
           to: -1002034905977
@@ -62,6 +59,8 @@ jobs:
           password: ${{secrets.FTP_PASSWORD}}
           local-dir: ./src/
           server-dir: /${{secrets.FPT_DIR_PATH}}/
+          exclude: |
+             **/.src/wp-content/plugins/*
 
   notification-to-telegram:
     runs-on: ubuntu-latest
