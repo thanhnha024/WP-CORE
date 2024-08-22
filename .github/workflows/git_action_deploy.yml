@@ -26,7 +26,6 @@ jobs:
             <i><code>${{ secrets.FPT_DIR_PATH }}</code><b> Website Deploying... 🚀</b></i>
 
             <b>Details:</b>
-            Deploying on Path: ${{ env.super_secret }}
             Project name 💻: ${{ github.repository }}
             Project link 🔎: https://${{ secrets.FPT_DIR_PATH }}
 
@@ -60,7 +59,10 @@ jobs:
           local-dir: ./src/
           server-dir: /${{secrets.FPT_DIR_PATH}}/
           exclude: |
-             **/.src/wp-content/plugins/*
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/wp-content/plugins/**
 
   notification-to-telegram:
     runs-on: ubuntu-latest
