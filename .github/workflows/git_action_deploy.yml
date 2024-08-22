@@ -13,18 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if FPT_DIR_PATH is set
+        if: ${{ env.super_secret != '' }}
         id: check_secret
-        run: echo "FPT_DIR_PATH=${{ secrets.FPT_DIR_PATH }}" > $GITHUB_ENV
-        continue-on-error: true # Continue even if the secret is not set
-
-      - name: Set environment variable for secret presence
-        id: set_env
-        run: |
-          if [ -z "${{ secrets.FPT_DIR_PATH }}" ]; then
-            echo "SECRET_NOT_SET=true" >> $GITHUB_ENV
-          else
-            echo "SECRET_NOT_SET=false" >> $GITHUB_ENV
-          fi
+        run: echo "FPT_DIR_PATH=${{ secrets.FPT_DIR_PATH }}"
+        continue-on-error: true
 
       - name: Send Telegram Message When Deploying
         if: env.SECRET_NOT_SET == 'false'
@@ -37,6 +29,7 @@ jobs:
             <i><code>${{ secrets.FPT_DIR_PATH }}</code><b> Website Deploying... 🚀</b></i>
 
             <b>Details:</b>
+            Deploying on Path: ${{ env.super_secret }}
             Project name 💻: ${{ github.repository }}
             Project link 🔎: https://${{ secrets.FPT_DIR_PATH }}
 
