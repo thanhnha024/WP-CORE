@@ -3,9 +3,8 @@ name: FCS Wordpress Deploy Via SFTP
 run-name: FCS Wordpress Deploy To Server 🚀
 on:
   push:
-    branches:
-      - production
-      - master
+    tags:
+      - production-*
 
 jobs:
   send_deploying:
