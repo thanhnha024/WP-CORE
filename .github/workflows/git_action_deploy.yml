@@ -59,7 +59,10 @@ jobs:
           local-dir: ./src/
           server-dir: /${{secrets.FPT_DIR_PATH}}/
           exclude: |
-             **/.src/wp-content/plugins/*
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/wp-content/plugins/**
 
   notification-to-telegram:
     runs-on: ubuntu-latest
