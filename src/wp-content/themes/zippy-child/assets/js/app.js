@@ -1,16 +1,27 @@
-// // import { DisplayLabel } from './components/DisplayLabel';
+/* This code below for JavaScript ES6 */
 
-// let Main = {
-//   init: async function () {
+/*
+import { DisplayLabel } from './components/DisplayLabel';
 
-//     // initialize demo javascript component - async/await invokes some 
-//     //  level of babel transformation 
-//     const displayLabel = new DisplayLabel();
-//     await displayLabel.init();
+let Main = {
+  init: async function () {
 
-//   }
-// };
+    // initialize demo javascript component - async/await invokes some
+    //  level of babel transformation
+    const displayLabel = new DisplayLabel();
+    await displayLabel.init();
 
+  }
+};
 
-// console.log($('.more-link'));
-// // Main.init();
+Main.init();
+
+*/
+
+/* Do not remove this code if use Jquery */
+
+"use strict";
+$ = jQuery;
+$(document).ready(function () {
+  console.log($(".admin"));
+});

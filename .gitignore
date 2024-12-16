@@ -30,5 +30,7 @@ src/wp-content/themes/twentytwentytwo
 
 src/wp-content/themes/twentytwentythree
 
+src/wp-content/themes/twentytwentyfive
+
 # Ignore docker file
 .env
