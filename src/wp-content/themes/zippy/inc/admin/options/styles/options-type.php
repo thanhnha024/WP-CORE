@@ -22,7 +22,7 @@ Flatsome_Option::add_field( 'option',
 		'type'        => 'checkbox',
 		'settings'    => 'google_fonts_cdn',
 		'label'       => __( 'Load Google Fonts from CDN', 'flatsome-admin' ),
-		'description' => '<strong>Enabling this is not recommended due to GDPR regulations!</strong> <a href="https://docs.uxthemes.com/article/415-google-fonts" target="_blank" rel="noopener noreferrer">Learn more</a>',
+		'description' => '<strong>Enabling this is not recommended due to GDPR regulations!</strong> <a href="https://docs.uxthemes.com/article/415-google-fonts" target="_blank" rel="noopener">Learn more</a>',
 		'section'     => 'type',
 		'default'     => 0,
 		'active_callback' => array(
@@ -34,6 +34,26 @@ Flatsome_Option::add_field( 'option',
 		),
 	)
 );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'            => 'custom',
+	'settings'        => 'clear_typography_cache',
+	'tooltip'         => 'Clear typography cache and locally downloaded font files.',
+	'section'         => 'type',
+	'default'         => '<button id="flatsome-customizer-clear-typography-cache" class="button-primary button" title="Clear typography cache">Clear typography cache</button>',
+	'active_callback' => array(
+		array(
+			'setting'  => 'disable_fonts',
+			'operator' => '==',
+			'value'    => false,
+		),
+		array(
+			'setting'  => 'google_fonts_cdn',
+			'operator' => '==',
+			'value'    => false,
+		),
+	),
+) );
 
 Flatsome_Option::add_field( 'option',
 	array(

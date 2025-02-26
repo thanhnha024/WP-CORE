@@ -2,8 +2,11 @@
 
 // Instagram Feed
 function ux_instagram_feed( $atts, $content = null ) {
+	static $count = 1;
+
 	extract( shortcode_atts( array(
-		'_id'                 => 'instagram-' . rand(),
+		'_id'                 => 'instagram-' . ( $count++ ),
+		'loading'             =>  get_theme_mod( 'instagram_lazy_load', 0 ) ? 'lazy' : '',
 		'photos'              => '10',
 		'class'               => '',
 		'visibility'          => '',
@@ -37,6 +40,10 @@ function ux_instagram_feed( $atts, $content = null ) {
 		'size'                => 'small', // small - thumbnail - original.
 	), $atts ) );
 
+	if ( defined( 'UX_BUILDER_AJAX_REQUEST' ) ) {
+		$loading = 'eager';
+	}
+
 	ob_start();
 
 	$limit = $photos;
@@ -51,7 +58,9 @@ function ux_instagram_feed( $atts, $content = null ) {
 			$hashtag = substr( $username, 1 );
 		}
 
-		$media_array = flatsome_instagram_get_feed( $username, $hashtag, $hashtag_media );
+		$media_array = $loading === 'lazy'
+			? flatsome_instagram_get_placeholder_feed( $limit )
+			: flatsome_instagram_get_feed( $username, $hashtag, $hashtag_media );
 
 		if ( empty( $media_array ) ) {
 			echo esc_html__( 'No images found.', 'flatsome-admin' );
@@ -81,6 +90,16 @@ function ux_instagram_feed( $atts, $content = null ) {
 			$repeater['depth']               = $depth;
 			$repeater['depth_hover']         = $depth_hover;
 
+			if ( $loading === 'lazy' ) {
+				unset( $atts['loading'] );
+
+				$value             = array_merge( $atts, array( '_id' => $_id ) );
+				$encoded_value     = base64_encode( wp_json_encode( $value ) );
+				$tick              = ceil( time() / MONTH_IN_SECONDS );
+				$hash              = substr( wp_hash( $tick . $encoded_value ), -12, 10 );
+				$repeater['attrs'] = 'data-flatsome-instagram="' . esc_attr( "$hash:$encoded_value" ) . '"';
+			}
+
 			// Filters for custom classes.
 			get_flatsome_repeater_start( $repeater );
 
@@ -95,14 +114,14 @@ function ux_instagram_feed( $atts, $content = null ) {
 					$caption = $item['description'];
 				}
 				?><div class="img has-hover no-overflow">
-					<div class="dark instagram-image-container image-<?php echo $image_hover; ?> instagram-image-type--<?php echo $item['type']; ?>">
-						<a href="<?php echo $item['link']; ?>" target="_blank" rel="noopener noreferrer" class="plain">
+					<div class="dark instagram-image-container image-<?php echo esc_attr( $image_hover ); ?> instagram-image-type--<?php echo esc_attr( $item['type'] ); ?>">
+						<a href="<?php echo esc_url( $item['link'] ); ?>" target="_blank" rel="noopener" class="plain">
 							<?php echo flatsome_get_image( $image_url, false, $caption ); ?>
 							<?php if ( $image_overlay ) { ?>
-								<div class="overlay" style="background-color: <?php echo $image_overlay; ?>"></div>
+								<div class="overlay" style="background-color: <?php echo esc_attr( $image_overlay ); ?>"></div>
 							<?php } ?>
 							<?php if ( $caption ) { ?>
-								<div class="caption"><?php echo $caption; ?></div>
+								<div class="caption"><?php echo wp_kses_post( $caption ); ?></div>
 							<?php } ?>
 						</a>
 					</div>
@@ -130,6 +149,18 @@ function ux_instagram_feed( $atts, $content = null ) {
 }
 
 add_shortcode( 'ux_instagram_feed', 'ux_instagram_feed' );
+
+function flatsome_instagram_get_placeholder_feed( $limit ) {
+	$media_svg = '<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"></svg>';
+    $media_url = 'data:image/svg+xml,' . rawurlencode( $media_svg );
+
+	return array_fill( 0, $limit, array(
+		'media_url'   => $media_url,
+		'link'        => '#',
+		'type'        => 'placeholder',
+		'description' => '',
+	) );
+}
 
 function flatsome_instagram_get_feed( $username, $hashtag, $hashtag_media ) {
 	$theme             = wp_get_theme( get_template() );
@@ -422,6 +453,33 @@ function flatsome_instagram_get_hashtag_media( $name, $type, $user_id, $access_t
 		return $body;
 	}
 }
+
+function flatsome_ajax_load_instagram () {
+	$data = isset( $_GET['data'] ) ? (string) $_GET['data'] : '';
+
+	list( $hash, $value ) = explode( ':', $data, 2 );
+
+	if ( empty( $value ) || empty( $hash ) ) {
+		wp_send_json_error( 'Invalid data' );
+	}
+
+	$tick     = ceil( time() / MONTH_IN_SECONDS );
+	$expected = substr( wp_hash( $tick . $value ), -12, 10 );
+
+	if ( ! hash_equals( $expected, $hash ) ) {
+		wp_send_json_error( 'Invalid hash' );
+	}
+
+	$atts = json_decode( base64_decode( $value ), true );
+
+	$atts['loading'] = 'eager';
+
+	$markup = ux_instagram_feed( $atts );
+
+	wp_send_json_success( trim( $markup ) );
+}
+add_action( 'wp_ajax_flatsome_load_instagram', 'flatsome_ajax_load_instagram' );
+add_action( 'wp_ajax_nopriv_flatsome_load_instagram', 'flatsome_ajax_load_instagram' );
 
 function flatsome_instagram_scrape_html( $username, $hashtag ) {
 	_deprecated_function( __METHOD__, '3.17', null );

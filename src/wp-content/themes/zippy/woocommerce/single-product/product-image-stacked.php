@@ -12,8 +12,8 @@
  *
  * @see              https://docs.woocommerce.com/document/template-structure/
  * @package          WooCommerce/Templates
- * @version          3.5.1
- * @flatsome-version 3.16.0
+ * @version          9.1.0
+ * @flatsome-version 3.19.4
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -48,6 +48,10 @@ if(get_theme_mod('product_zoom', 0)){
 $rtl = 'false';
 if(is_rtl()) $rtl = 'true';
 
+if ( get_theme_mod( 'product_gallery_slider_type' ) === 'fade' ) {
+	$slider_classes[] = 'slider-type-fade';
+}
+
 if(get_theme_mod('product_lightbox','default') == 'disabled'){
   $slider_classes[] = 'disable-lightbox';
 }
@@ -63,7 +67,7 @@ if(get_theme_mod('product_lightbox','default') == 'disabled'){
     <?php do_action('flatsome_product_image_tools_top'); ?>
   </div>
 
-  <figure class="woocommerce-product-gallery__wrapper <?php echo implode(' ', $slider_classes); ?>"
+  <div class="woocommerce-product-gallery__wrapper <?php echo implode(' ', $slider_classes); ?>"
 		  data-flickity-options='{
                 "cellAlign": "center",
                 "wrapAround": true,
@@ -81,16 +85,19 @@ if(get_theme_mod('product_lightbox','default') == 'disabled'){
     if ( $product->get_image_id() ) {
       $html  = flatsome_wc_get_gallery_image_html( $post_thumbnail_id, true );
     } else {
-      $html  = '<div class="woocommerce-product-gallery__image--placeholder">';
-      $html .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woocommerce_single' ) ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
-      $html .= '</div>';
+		$wrapper_classname = $product->is_type( 'variable' ) && ! empty( $product->get_available_variations( 'image' ) ) ?
+			'woocommerce-product-gallery__image woocommerce-product-gallery__image--placeholder' :
+			'woocommerce-product-gallery__image--placeholder';
+		$html              = sprintf( '<div class="%s">', esc_attr( $wrapper_classname ) );
+		$html             .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woocommerce_single' ) ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
+		$html             .= '</div>';
     }
 
 		echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
 
     do_action( 'woocommerce_product_thumbnails' );
     ?>
-  </figure>
+  </div>
 </div>
 <?php do_action('flatsome_after_product_images'); ?>
 

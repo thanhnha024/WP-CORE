@@ -17,6 +17,8 @@ class DoShortcode {
       die;
     }
 
+	define( 'UX_BUILDER_AJAX_REQUEST', true );
+
     $shortcode = wp_parse_args( $_POST['ux_builder_shortcode'], array(
       'tag' => '', '$id' => '', 'options' => array()
     ) );

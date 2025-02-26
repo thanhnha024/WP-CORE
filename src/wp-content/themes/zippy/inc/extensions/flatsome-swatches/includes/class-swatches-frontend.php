@@ -26,9 +26,20 @@ class Swatches_Frontend {
 	/**
 	 * Main instance
 	 *
+	 * @deprecated in favor of get_instance()
 	 * @return Swatches_Frontend
 	 */
 	public static function instance() {
+		_deprecated_function( __METHOD__, '3.19.0', 'get_instance()' );
+		return self::get_instance();
+	}
+
+	/**
+	 * Main instance
+	 *
+	 * @return Swatches_Frontend
+	 */
+	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -56,10 +67,10 @@ class Swatches_Frontend {
 		// Handle cache.
 		add_action( 'save_post', array( $this, 'cache_clear_save_post' ) );
 		add_action( 'woocommerce_before_product_object_save', array( $this, 'cache_clear_product_object_save' ) );
-		add_filter( 'pre_set_theme_mod_swatches', array( $this, 'cache_clear_all' ), 10, 2 );
-		add_filter( 'pre_set_theme_mod_swatches_box_attribute', array( $this, 'cache_clear_all' ), 10, 2 );
-		add_filter( 'pre_update_option_woocommerce_thumbnail_image_width', array( $this, 'cache_clear_all' ), 10, 2 );
-		add_filter( 'pre_update_option_woocommerce_thumbnail_cropping', array( $this, 'cache_clear_all' ), 10, 2 );
+		add_filter( 'pre_set_theme_mod_swatches', array( swatches(), 'cache_clear_on_option' ), 10, 2 );
+		add_filter( 'pre_set_theme_mod_swatches_box_attribute', array( swatches(), 'cache_clear_on_option' ), 10, 2 );
+		add_filter( 'pre_update_option_woocommerce_thumbnail_image_width', array( swatches(), 'cache_clear_on_option' ), 10, 2 );
+		add_filter( 'pre_update_option_woocommerce_thumbnail_cropping', array( swatches(), 'cache_clear_on_option' ), 10, 2 );
 
 		add_filter( 'woocommerce_variation_is_active', array( $this, 'variation_is_active' ), 10, 2 );
 	}
@@ -68,13 +79,13 @@ class Swatches_Frontend {
 	 * Enqueue scripts and stylesheets
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style( 'flatsome-swatches-frontend', get_template_directory_uri() . '/assets/css/extensions/flatsome-swatches-frontend.css', array(), flatsome_swatches()->version );
+		wp_enqueue_style( 'flatsome-swatches-frontend', get_template_directory_uri() . '/assets/css/extensions/flatsome-swatches-frontend.css', array(), swatches()->version );
 		wp_style_add_data( 'flatsome-swatches-frontend', 'rtl', 'replace' );
 
 		wp_enqueue_script( 'flatsome-swatches-frontend', get_template_directory_uri() . '/assets/js/extensions/flatsome-swatches-frontend.js', array(
 			'jquery',
 			'flatsome-js',
-		), flatsome_swatches()->version, true );
+		), swatches()->version, true );
 	}
 
 	/**
@@ -104,18 +115,13 @@ class Swatches_Frontend {
 			}
 		<?php endif; ?>
 
-		<?php if ( get_theme_mod( 'swatches_color_selected', \Flatsome_Default::COLOR_SECONDARY ) !== \Flatsome_Default::COLOR_SECONDARY ) : ?>
-			.variations_form .ux-swatch.selected {
-			box-shadow: 0 0 0 0.1rem <?php echo get_theme_mod( 'swatches_color_selected' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>;
-			}
-		<?php endif; ?>
+		.variations_form .ux-swatch.selected {
+		box-shadow: 0 0 0 2px <?php echo get_theme_mod( 'swatches_color_selected' ) ?: 'var(--fs-color-secondary)'; // phpcs:ignore WordPress.Security.EscapeOutput ?>;
+		}
 
-		<?php if ( get_theme_mod( 'swatches_box_color_selected', \Flatsome_Default::COLOR_SECONDARY ) !== \Flatsome_Default::COLOR_SECONDARY ) : ?>
-			.ux-swatches-in-loop .ux-swatch.selected {
-			box-shadow: 0 0 0 0.1rem <?php echo get_theme_mod( 'swatches_box_color_selected' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>;
-			}
-		<?php endif; ?>
-
+		.ux-swatches-in-loop .ux-swatch.selected {
+		box-shadow: 0 0 0 2px <?php echo get_theme_mod( 'swatches_box_color_selected' ) ?: 'var(--fs-color-secondary)'; // phpcs:ignore WordPress.Security.EscapeOutput ?>;
+		}
 		<?php
 		$output = ob_get_clean();
 
@@ -123,7 +129,7 @@ class Swatches_Frontend {
 			return;
 		}
 
-		$css  = '<style id="flatsome-swatches-css" type="text/css">';
+		$css  = '<style id="flatsome-swatches-css">';
 		$css .= $output;
 		$css .= '</style>';
 
@@ -140,8 +146,8 @@ class Swatches_Frontend {
 	 * @uses swatch_html()
 	 */
 	public function get_swatch_html( $html, $args ) {
-		$swatch_types = flatsome_swatches()->get_attribute_types();
-		$attr         = flatsome_swatches()->get_attribute( $args['attribute'] );
+		$swatch_types = swatches()->get_attribute_types();
+		$attr         = swatches()->get_attribute( $args['attribute'] );
 
 		// Abort if this is normal attribute.
 		if ( empty( $attr ) || ! array_key_exists( $attr->attribute_type, $swatch_types ) ) {
@@ -155,7 +161,7 @@ class Swatches_Frontend {
 		$classes              = array( 'ux-swatches', "ux-swatches-attribute-{$attr->attribute_type}" );
 		$selector_classes     = array( 'variation-selector', "variation-select-{$attr->attribute_type}" );
 		$args['tooltip']      = get_theme_mod( 'swatches_tooltip', 1 );
-		$attr_options         = flatsome_swatches()->get_attribute_option_by_name( $args['attribute'] );
+		$attr_options         = swatches()->get_attribute_option_by_name( $args['attribute'] );
 		$use_variation_images = $this->use_variation_images( $attr_options );
 		$variations           = $use_variation_images ? array_map( array( $this, 'get_variation' ), $product->get_children() ) : $product->get_available_variations();
 
@@ -239,7 +245,7 @@ class Swatches_Frontend {
 			case 'ux_color':
 				$color_classes = array( 'ux-swatch__color' );
 				$value         = get_term_meta( $term->term_id, 'ux_color', true );
-				$color         = flatsome_swatches()->parse_ux_color_term_meta( $value );
+				$color         = swatches()->parse_ux_color_term_meta( $value );
 
 				if ( $color['class'] ) $color_classes[] = $color['class'];
 
@@ -318,7 +324,7 @@ class Swatches_Frontend {
 	public function get_variation_attributes_types( $attributes ) {
 		global $wc_product_attributes;
 		$types        = array();
-		$defined_attr = flatsome_swatches()->get_attribute_types();
+		$defined_attr = swatches()->get_attribute_types();
 
 		if ( ! empty( $attributes ) ) {
 			foreach ( $attributes as $name => $options ) {
@@ -359,7 +365,7 @@ class Swatches_Frontend {
 			return;
 		}
 
-		$attr_options  = flatsome_swatches()->get_attribute_option_by_name( $attribute_name );
+		$attr_options  = swatches()->get_attribute_option_by_name( $attribute_name );
 		$cache_enabled = apply_filters( 'flatsome_swatches_cache_enabled', true );
 		$transient     = 'flatsome_swatches_cache_' . $id;
 		$classes       = array( 'ux-swatches', 'ux-swatches-in-loop' );
@@ -387,6 +393,11 @@ class Swatches_Frontend {
 		if ( empty( $swatches_to_show ) ) {
 			return;
 		}
+
+		if ( count( $swatches_to_show ) < (int) apply_filters( 'flatsome_swatches_box_display_min_count', 1, $product, $attribute ) ) {
+			return;
+		}
+
 		$html = '';
 
 		if ( get_theme_mod( 'swatches_box_shape' ) ) {
@@ -439,7 +450,7 @@ class Swatches_Frontend {
 
 			switch ( $type_tmp ) {
 				case 'ux_color':
-					$color = flatsome_swatches()->parse_ux_color_term_meta( isset( $swatch['ux_color'] ) ? $swatch['ux_color'] : '' );
+					$color = swatches()->parse_ux_color_term_meta( isset( $swatch['ux_color'] ) ? $swatch['ux_color'] : '' );
 
 					if ( $color['class'] ) $color_classes[] = $color['class'];
 
@@ -462,10 +473,10 @@ class Swatches_Frontend {
 				$data['data-image-src']    = $swatch['image_src'];
 				$data['data-image-srcset'] = $swatch['image_srcset'];
 				$data['data-image-sizes']  = $swatch['image_sizes'];
+			}
 
-				if ( ! $swatch['is_in_stock'] ) {
-					$swatch_classes[] = 'out-of-stock';
-				}
+			if ( isset( $swatch['is_in_stock'] ) && ! $swatch['is_in_stock'] ) {
+				$swatch_classes[] = 'out-of-stock';
 			}
 
 			$data['data-attribute_name'] = 'attribute_' . sanitize_title( $attribute_name );
@@ -473,7 +484,7 @@ class Swatches_Frontend {
 
 			if ( $swatch_layout === 'limit' && $swatch_count > $swatch_limit ) {
 				if ( $index >= $swatch_limit ) {
-					$swatch_classes[] = 'hidden';
+					$swatch_classes[] = 'ux-swatch--limited hidden';
 				}
 				if ( $index === $swatch_limit ) {
 					$html .= '<span class="ux-swatches__limiter">+' . ( $swatch_count - $swatch_limit ) . '</span>';
@@ -544,6 +555,7 @@ class Swatches_Frontend {
 	 */
 	private function get_option_variations( $attribute_name, $available_variations, $option = false ) {
 		$swatches_to_show = array();
+		$all_out_of_stock = true;
 
 		foreach ( $available_variations as $key => $variation ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			$option_variation = array();
@@ -564,6 +576,10 @@ class Swatches_Frontend {
 				);
 			}
 
+			if ( ! $option && $variation['is_in_stock'] ) {
+				$all_out_of_stock = false;
+			}
+
 			// Get only one variation by attribute option value.
 			if ( $option ) {
 				if ( $val != $option ) {
@@ -579,6 +595,11 @@ class Swatches_Frontend {
 				if ( ! array_key_exists( $val, $swatches_to_show ) ) {
 					$swatches_to_show[ $val ] = array_merge( $swatch, $option_variation );
 				}
+			}
+
+			if ( ! $option ) {
+				$swatches_to_show[ $val ]['is_in_stock'] = ! $all_out_of_stock;
+				$all_out_of_stock                        = true;
 			}
 		}
 
@@ -689,8 +710,8 @@ class Swatches_Frontend {
 	 * @return string
 	 */
 	public function layered_nav_term_html( $term_html, $term, $link, $count ) {
-		$swatch_types = flatsome_swatches()->get_attribute_types();
-		$attr         = flatsome_swatches()->get_attribute( $term->taxonomy );
+		$swatch_types = swatches()->get_attribute_types();
+		$attr         = swatches()->get_attribute( $term->taxonomy );
 
 		// Abort if this is normal attribute.
 		if ( empty( $attr ) || ! array_key_exists( $attr->attribute_type, $swatch_types ) ) {
@@ -724,7 +745,7 @@ class Swatches_Frontend {
 			case 'ux_color':
 				$color_classes = array( 'ux-swatch__color' );
 				$value         = get_term_meta( $term->term_id, 'ux_color', true );
-				$color         = flatsome_swatches()->parse_ux_color_term_meta( $value );
+				$color         = swatches()->parse_ux_color_term_meta( $value );
 				$classes[]     = 'ux-swatch--color';
 
 				if ( $color['class'] ) $color_classes[] = $color['class'];
@@ -768,22 +789,6 @@ class Swatches_Frontend {
 		$post_id   = $product->get_id();
 		$transient = 'flatsome_swatches_cache_' . $post_id;
 		delete_transient( $transient );
-	}
-
-	/**
-	 * Clear all cache.
-	 *
-	 * @param string $new_value The new value of the theme modification.
-	 * @param string $old_value The current value of the theme modification.
-	 *
-	 * @return mixed
-	 */
-	public function cache_clear_all( $new_value, $old_value ) {
-		if ( $new_value !== $old_value ) {
-			flatsome_swatches()->cache_clear();
-		}
-
-		return $new_value;
 	}
 
 	/**

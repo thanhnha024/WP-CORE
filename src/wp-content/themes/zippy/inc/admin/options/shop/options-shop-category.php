@@ -74,6 +74,35 @@ Flatsome_Option::add_field( 'option', array(
 ) );
 
 Flatsome_Option::add_field( 'option', array(
+	'type'            => 'select',
+	'settings'        => 'category_sticky_sidebar_mode',
+	'label'           => __( 'Sticky mode', 'flatsome-admin' ),
+	'section'         => 'woocommerce_product_catalog',
+	'default'         => '',
+	'choices'         => array(
+		''           => __( 'CSS (native)', 'flatsome-admin' ),
+		'javascript' => __( 'JavaScript (enhanced)', 'flatsome-admin' ),
+	),
+	'active_callback' => array(
+		array(
+			'setting'  => 'category_sidebar',
+			'operator' => '!==',
+			'value'    => 'none',
+		),
+		array(
+			'setting'  => 'category_sidebar',
+			'operator' => '!==',
+			'value'    => 'off-canvas',
+		),
+		array(
+			'setting'  => 'category_sticky_sidebar',
+			'operator' => '==',
+			'value'    => true,
+		),
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
 	'type'      => 'radio-image',
 	'settings'  => 'category_grid_style',
 	'label'     => __( 'List Style', 'flatsome-admin' ),
@@ -223,6 +252,24 @@ Flatsome_Option::add_field( 'option', array(
 		return ! $wpseo && ! $rank_math;
 	},
 	'default'         => 1,
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'      => 'checkbox',
+	'settings'  => 'category_show_result_count',
+	'transport' => flatsome_customizer_transport(),
+	'label'     => esc_html__( 'Show result count', 'flatsome' ),
+	'section'   => 'woocommerce_product_catalog',
+	'default'   => 1,
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'      => 'checkbox',
+	'settings'  => 'category_show_catalog_ordering',
+	'transport' => flatsome_customizer_transport(),
+	'label'     => esc_html__( 'Show catalog ordering', 'flatsome' ),
+	'section'   => 'woocommerce_product_catalog',
+	'default'   => 1,
 ) );
 
 Flatsome_Option::add_field( 'option', array(
@@ -717,6 +764,7 @@ if ( get_theme_mod( 'swatches' ) ) :
 		'settings'        => 'swatches_box_color_selected',
 		'transport'       => 'postMessage',
 		'label'           => __( 'Color :selected', 'flatsome' ),
+		'description'     => __( 'Default is Secondary color', 'flatsome-admin' ),
 		'section'         => 'woocommerce_product_catalog',
 		'active_callback' => array(
 			array(
@@ -725,7 +773,7 @@ if ( get_theme_mod( 'swatches' ) ) :
 				'value'    => '',
 			),
 		),
-		'default'         => Flatsome_Default::COLOR_SECONDARY,
+		'default'         => '',
 	) );
 
 	Flatsome_Option::add_field( 'option', array(
@@ -766,13 +814,38 @@ if ( get_theme_mod( 'swatches' ) ) :
 	Flatsome_Option::add_field( 'option', array(
 		'type'            => 'checkbox',
 		'settings'        => 'swatches_box_reset',
-		'label'           => __( 'Auto reset selection', 'flatsome-admin' ),
+		'label'           => __( 'Auto reset', 'flatsome-admin' ),
 		'section'         => 'woocommerce_product_catalog',
 		'active_callback' => array(
 			array(
 				'setting'  => 'swatches_box_attribute',
 				'operator' => '!=',
 				'value'    => '',
+			),
+		),
+		'default'         => 0,
+	) );
+
+	Flatsome_Option::add_field( 'option', array(
+		'type'            => 'checkbox',
+		'settings'        => 'swatches_box_reset_limited',
+		'label'           => __( 'Reset limited', 'flatsome-admin' ),
+		'section'         => 'woocommerce_product_catalog',
+		'active_callback' => array(
+			array(
+				'setting'  => 'swatches_box_attribute',
+				'operator' => '!=',
+				'value'    => '',
+			),
+			array(
+				'setting'  => 'swatches_box_layout',
+				'operator' => '==',
+				'value'    => 'limit',
+			),
+			array(
+				'setting'  => 'swatches_box_reset',
+				'operator' => '!=',
+				'value'    => 0,
 			),
 		),
 		'default'         => 0,

@@ -94,7 +94,7 @@ final class Status {
 	 *
 	 * @var string Version.
 	 */
-	private $recommended_php_version = '8.0';
+	private $recommended_php_version = '8.1';
 
 	/**
 	 * Status icons.
@@ -137,9 +137,20 @@ final class Status {
 	/**
 	 * Main instance.
 	 *
+	 * @deprecated in favor of get_instance()
 	 * @return Status
 	 */
 	public static function instance() {
+		_deprecated_function( __METHOD__, '3.19.0', 'get_instance()' );
+		return self::get_instance();
+	}
+
+	/**
+	 * Main instance.
+	 *
+	 * @return Status
+	 */
+	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -198,7 +209,7 @@ final class Status {
 			'author_url'             => esc_url_raw( $active_theme->{'Author URI'} ),
 			'is_child_theme'         => is_child_theme(),
 			'has_outdated_templates' => $this->outdated_templates,
-			'is_registered'          => flatsome_envato()->is_registered(),
+			'is_registered'          => flatsome_envato()->is_verified(),
 			'release_channel'        => get_theme_mod( 'release_channel' ),
 			'overrides'              => $this->override_files,
 		);
@@ -624,8 +635,8 @@ final class Status {
 					if ( $this->theme['is_child_theme'] ) {
 						echo '<mark class="success"><span class="dashicons dashicons-yes"></span></mark>';
 					} else {
-						/* translators: %s docs link. */
-						echo '<span class="dashicons dashicons-no-alt"></span>&ndash; ' . wp_kses_post( sprintf( __( 'If you are modifying Flatsome on the parent theme we recommend using a child theme. See: <a href="%s" target="_blank" rel="noopener noreferrer">How to create a child theme</a>', 'flatsome' ), 'https://developer.wordpress.org/themes/advanced-topics/child-themes/' ) );
+						/* translators: %s: Docs link. */
+						echo '<span class="dashicons dashicons-no-alt"></span>&ndash; ' . wp_kses_post( sprintf( __( 'If you are modifying Flatsome on the parent theme we recommend using a child theme. See: <a href="%s" target="_blank">How to create a child theme</a>', 'flatsome' ), 'https://developer.wordpress.org/themes/advanced-topics/child-themes/' ) );
 					}
 					?>
 				</td>
@@ -702,7 +713,7 @@ final class Status {
 						echo '<mark class="success">' . esc_html( $this->environment['wp_version'] ) . '</mark>';
 					} elseif ( $this->tests['wp_version']['result'] === Log_Level::CRITICAL ) {
 						$wp_version_required = wp_get_theme( get_template() )->get( 'RequiresWP' );
-						/* translators: The minimum required WP version number. */
+						/* translators: %s: The minimum required WP version number. */
 						$notice = sprintf( __( 'The theme requires WordPress version %s or above.', 'flatsome' ), $wp_version_required );
 						?>
 						<mark class="critical"><span class="dashicons dashicons-warning"></span>
@@ -725,7 +736,7 @@ final class Status {
 							echo '<mark class="success">' . esc_html( $this->environment['wc_version'] ) . '</mark>';
 						} else {
 							$wc_version_required = wp_get_theme( get_template() )->get( 'WC requires at least' );
-							/* translators: The minimum required WC version number. */
+							/* translators: %s: The minimum required WC version number. */
 							$notice = sprintf( __( 'The theme requires WooCommerce version %s or above.', 'flatsome' ), $wc_version_required );
 							?>
 							<mark class="critical"><span class="dashicons dashicons-warning"></span>
@@ -747,7 +758,7 @@ final class Status {
 						echo '<mark class="success">' . esc_html( size_format( $this->environment['wp_memory_limit'] ) ) . '</mark>';
 					} else {
 						/* translators: %1$s: Memory limit, %2$s: Docs link. */
-						echo '<mark class="warning">' . sprintf( esc_html__( '%1$s - We recommend setting memory to at least 256MB. See: %2$s', 'flatsome' ), esc_html( size_format( $this->environment['wp_memory_limit'] ) ), '<a href="https://wordpress.org/support/article/editing-wp-config-php/#increasing-memory-allocated-to-php" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Increasing memory allocated to PHP', 'flatsome' ) . '</a>' ) . '</mark>';
+						echo '<mark class="warning">' . sprintf( esc_html__( '%1$s - We recommend setting memory to at least 256MB. See: %2$s', 'flatsome' ), esc_html( size_format( $this->environment['wp_memory_limit'] ) ), '<a href="https://wordpress.org/support/article/editing-wp-config-php/#increasing-memory-allocated-to-php" target="_blank" rel="noopener">' . esc_html__( 'Increasing memory allocated to PHP', 'flatsome' ) . '</a>' ) . '</mark>';
 					}
 					?>
 				</td>
@@ -822,7 +833,7 @@ final class Status {
 						$class  = 'critical';
 
 						if ( version_compare( $this->environment['php_version'], $this->recommended_php_version, '<' ) ) {
-							/* translators: The recommended PHP version number. */
+							/* translators: %s: The recommended PHP version number. */
 							$notice = sprintf( __( 'We recommend using PHP version %s or above for greater performance and security.', 'flatsome' ), $this->recommended_php_version );
 							$class  = 'warning';
 						}
@@ -896,8 +907,8 @@ final class Status {
 					<?php else : ?>
 						<mark class="critical"><span class="dashicons dashicons-warning"></span>
 							<?php
-							/* translators: %s: docs link. */
-							echo wp_kses_post( sprintf( __( 'Your site is not using HTTPS. <a href="%s" target="_blank" rel="noopener noreferrer">Learn more about HTTPS and SSL Certificates</a>.', 'flatsome' ), 'https://wordpress.com/support/https-ssl/' ) );
+							/* translators: %s: Docs link. */
+							echo wp_kses_post( sprintf( __( 'Your site is not using HTTPS. <a href="%s" target="_blank">Learn more about HTTPS and SSL Certificates</a>.', 'flatsome' ), 'https://wordpress.com/support/https-ssl/' ) );
 							?>
 						</mark>
 					<?php endif; ?>
@@ -1332,6 +1343,6 @@ final class Log_Level { // phpcs:ignore
  * @return Status
  */
 function status() {
-	return Status::instance();
+	return Status::get_instance();
 }
 

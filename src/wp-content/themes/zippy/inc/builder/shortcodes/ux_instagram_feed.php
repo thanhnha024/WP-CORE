@@ -21,6 +21,16 @@ $options = array(
       ),
     ),
 
+	'loading' => array(
+		'type' => 'select',
+		'heading' => __( 'Loading' ),
+		'default' => '',
+		'options' => array(
+		  ''     => __( 'Default' ),
+		  'lazy' => __( 'Lazy' ),
+		),
+	),
+
     'photos' => array(
         'type' => 'slider',
         'heading' => 'Images',

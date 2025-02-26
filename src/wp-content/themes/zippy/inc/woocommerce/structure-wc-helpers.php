@@ -15,6 +15,11 @@ function ux_list_products( $args ) {
 			$show = $options['show'];
 		}
 
+		$page_number = '1';
+		if ( isset( $options['page_number'] ) ) {
+			$page_number = $options['page_number'];
+		}
+
 		$orderby = 'date';
 		$order   = 'desc';
 		if ( isset( $options['orderby'] ) ) {
@@ -45,16 +50,26 @@ function ux_list_products( $args ) {
 		$offset = '';
 		if ( isset( $options['offset'] ) ) {
 			$offset = $options['offset'];
+
+			$found_posts_filter_callback = function ( $found_posts, $query ) use ( $offset ) {
+				return $found_posts - (int) $offset;
+			};
+
+			add_filter( 'found_posts', $found_posts_filter_callback, 1, 2 );
 		}
 	} else {
 		return false;
 	}
 
+	$offset = (int) $page_number > 1
+		? (int) $offset + ( (int) $page_number - 1 ) * (int) $number
+		: $offset;
+
 	$query_args = array(
 		'posts_per_page'      => $number,
 		'post_status'         => 'publish',
 		'post_type'           => 'product',
-		'no_found_rows'       => 1,
+		'paged'               => $page_number,
 		'ignore_sticky_posts' => 1,
 		'order'               => $order,
 		'product_tag'         => $tags,
@@ -115,6 +130,10 @@ function ux_list_products( $args ) {
 	}
 
 	$results = new WP_Query( $query_args );
+
+	if ( isset( $found_posts_filter_callback ) ) {
+		remove_filter( 'found_posts', $found_posts_filter_callback, 1 );
+	}
 
 	return $results;
 } // List products
@@ -183,6 +202,9 @@ if ( ! get_theme_mod( 'activated_before' ) && is_admin() && isset( $_GET['activa
 		update_option( 'woocommerce_thumbnail_cropping', 'custom' );
 		update_option( 'woocommerce_thumbnail_cropping_custom_width', 5 );
 		update_option( 'woocommerce_thumbnail_cropping_custom_height', 6 );
+
+		// Mark customize store as completed (WC 8.8).
+		update_option( 'woocommerce_admin_customize_store_completed', 'yes' );
 	}
 
 	add_action( 'init', 'flatsome_woocommerce_image_dimensions', 1 );

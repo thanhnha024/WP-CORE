@@ -38,7 +38,8 @@ function flatsome_ajax_search_posts( $args ) {
  */
 function flatsome_ajax_search_get_products( $search_type, array $args ) {
 	$order_by      = get_theme_mod( 'search_products_order_by', 'relevance' );
-	$ordering_args = WC()->query->get_catalog_ordering_args( $order_by, 'ASC' );
+	$order         = get_theme_mod( 'search_products_order', 'ASC' );
+	$ordering_args = WC()->query->get_catalog_ordering_args( $order_by, $order );
 	$defaults      = $args;
 
 	$args['post_type']  = 'product';
@@ -226,8 +227,16 @@ function flatsome_unique_suggestions( array $raw_results, array $suggestions ) {
 	$needs_filtering = count( array_filter( $results ) ) > 1;
 
 	if ( $needs_filtering ) {
-		$suggestions = array_map( 'unserialize', array_unique( array_map( 'serialize', $suggestions ) ) );
+		$unique_suggestions = array();
+		foreach ( $suggestions as $suggestion ) {
+			$id = $suggestion['id'];
+			if ( ! isset( $unique_suggestions[ $id ] ) ) {
+				$unique_suggestions[ $id ] = $suggestion;
+			}
+		}
+		$suggestions = array_values( $unique_suggestions );
 	}
 
 	return $suggestions;
 }
+
