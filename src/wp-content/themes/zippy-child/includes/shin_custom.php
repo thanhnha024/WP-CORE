@@ -20,7 +20,7 @@ function add_product_video_url_meta_box() {
         'high'
     );
 }
-add_action('add_meta_boxes', 'add_product_video_url_meta_box');
+// add_action('add_meta_boxes', 'add_product_video_url_meta_box');
 
 function display_product_video_url_meta_box($post) {
     $video_url = get_post_meta($post->ID, '_product_video_url', true);
@@ -35,7 +35,7 @@ function save_product_video_url_meta_box($post_id) {
         update_post_meta($post_id, '_product_video_url', esc_url($_POST['product_video_url']));
     }
 }
-add_action('save_post_product', 'save_product_video_url_meta_box');
+// add_action('save_post_product', 'save_product_video_url_meta_box');
 
 
 function display_product_video_on_single_product() {
@@ -57,4 +57,4 @@ function display_product_video_on_single_product() {
 
     <?php    
 }
-add_action('woocommerce_product_thumbnails', 'display_product_video_on_single_product', 0, 0);
+// add_action('woocommerce_product_thumbnails', 'display_product_video_on_single_product', 0, 0);

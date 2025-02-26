@@ -62,14 +62,14 @@ class Featured_Item_Post_Type {
 	 */
 	protected function register_post_type() {
 		$labels = array(
-			'name'               => __( 'Projects', 'flatsome-admin' ),
-			'singular_name'      => __( 'Project', 'flatsome-admin' ),
+			'name'               => __( 'Portfolio', 'flatsome-admin' ),
+			'singular_name'      => __( 'Portfolio', 'flatsome-admin' ),
 			'add_new'            => __( 'Add New', 'flatsome-admin' ),
 			'add_new_item'       => __( 'Add New', 'flatsome-admin' ),
-			'edit_item'          => __( 'Edit Project', 'flatsome-admin' ),
-			'new_item'           => __( 'Add New Project', 'flatsome-admin' ),
-			'view_item'          => __( 'View Project', 'flatsome-admin' ),
-			'search_items'       => __( 'Search Project', 'flatsome-admin' ),
+			'edit_item'          => __( 'Edit Portfolio', 'flatsome-admin' ),
+			'new_item'           => __( 'Add New Portfolio', 'flatsome-admin' ),
+			'view_item'          => __( 'View Portfolio', 'flatsome-admin' ),
+			'search_items'       => __( 'Search Portfolio', 'flatsome-admin' ),
 			'not_found'          => __( 'No items found', 'flatsome-admin' ),
 			'not_found_in_trash' => __( 'No items found in trash', 'flatsome-admin' ),
 		);
@@ -108,7 +108,7 @@ class Featured_Item_Post_Type {
 	 */
 	protected function register_taxonomy_tag() {
 		$labels = array(
-			'name'                       => __( 'Project Tags', 'flatsome-admin' ),
+			'name'                       => __( 'Portfolio Tags', 'flatsome-admin' ),
 			'singular_name'              => __( 'Tag', 'flatsome-admin' ),
 			'menu_name'                  => __( 'Tags', 'flatsome-admin' ),
 			'edit_item'                  => __( 'Edit Tag', 'flatsome-admin' ),
@@ -153,7 +153,7 @@ class Featured_Item_Post_Type {
 
 
 		$labels = array(
-			'name'                       => __( 'Project Categories', 'flatsome-admin' ),
+			'name'                       => __( 'Portfolio Categories', 'flatsome-admin' ),
 			'singular_name'              => __( 'Category', 'flatsome-admin' ),
 			'menu_name'                  => __( 'Categories', 'flatsome-admin' ),
 			'edit_item'                  => __( 'Edit Category', 'flatsome-admin' ),

@@ -39,7 +39,7 @@ function flatsome_maintenance_admin_notice() {
 				</a>
 			</p>
 			<p>
-				<a href="<?php echo esc_url_raw( UXTHEMES_ACCOUNT_URL ); ?>" target="_blank" rel="noopener noreferrer">
+				<a href="<?php echo esc_url_raw( UXTHEMES_ACCOUNT_URL ); ?>" target="_blank" rel="noopener">
 					<?php esc_html_e( 'Manage your licenses', 'flatsome' ); ?>
 					<span class="dashicons dashicons-external" style="vertical-align:middle;font-size:18px;text-decoration: none;"></span>
 				</a>
@@ -68,16 +68,14 @@ function flatsome_status_check_admin_notice() {
 		?>
 		<div class="notice notice-info">
 			<h3>
-				<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px; vertical-align: middle">
-					<path d="M10.005 16.476L7.51713 13.9894L10.005 11.5027V7.11759L5.32346 11.7968L3.49745 9.97169L10.005 3.4674V0L0 10L10.005 20V16.476Z" fill="black"/>
-					<g opacity="0.502624">
-						<path opacity="0.387069" d="M9.995 16.476L12.4829 13.9894L9.995 11.5027V7.11759L14.6765 11.7968L16.5025 9.97169L9.995 3.4674V0L20 10L9.995 20V16.476Z" fill="black"/>
-					</g>
+				<svg width="20" height="20" viewBox="0 0 438 438" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px; vertical-align: middle">
+					<path d="M218.505 437.013V375.737L169.875 327.108L218.505 278.476V217.2L139.236 296.471L61.2764 218.51L218.505 61.2804V0.00683594L0 218.51L218.505 437.013Z" fill="black"></path>
+					<path opacity="0.5" d="M218.507 61.2759L375.735 218.505L297.776 296.464L218.507 217.198V278.472L267.139 327.103L218.507 375.732V437.006L328.413 327.103L437.012 218.505L218.507 0V61.2759Z" fill="black"></path>
 				</svg>
 				<?php esc_html_e( 'Flatsome', 'flatsome' ); ?>
 			</h3>
 			<p>
-				<?php /* translators: %1$s theme name. %2$s the URL to the status page. */ ?>
+				<?php /* translators: %1$s: Theme name, %2$s: The URL to the status page. */ ?>
 				<?php echo sprintf( __( '<strong>Your theme (%1$s) contains outdated copies of some Flatsome template files.</strong> These files may need updating to ensure they are compatible with the current version of Flatsome. Suggestions:', 'flatsome' ), esc_html( wp_get_theme()->name ) ); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>
 			</p>
 			<ol>
@@ -85,7 +83,7 @@ function flatsome_status_check_admin_notice() {
 				<li><?php esc_html_e( 'If you are unfamiliar with code/templates and resolving potential conflicts, reach out to a developer for assistance.', 'flatsome' ); ?></li>
 			</ol>
 			<p class="submit">
-				<a class="button button-large" href="https://docs.uxthemes.com/article/414-system-status#templates" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about templates', 'flatsome' ); ?>
+				<a class="button button-large" href="https://docs.uxthemes.com/article/414-system-status#templates" target="_blank" rel="noopener"><?php esc_html_e( 'Learn more about templates', 'flatsome' ); ?>
 					<span style="font-size:16px;width:auto;vertical-align:middle;" class="dashicons dashicons-external"></span>
 				</a>
 				<a class="button button-large button-primary" href="<?php echo esc_url_raw( network_admin_url( 'admin.php?page=flatsome-panel-status#templates' ) ); ?>"><?php esc_html_e( 'View affected templates', 'flatsome' ); ?></a>
